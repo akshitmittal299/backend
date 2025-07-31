@@ -87,12 +87,19 @@ WSGI_APPLICATION = 'ecomerce.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
+import os
+
 DATABASES = {
     'default': {
-        'ENGINE': config('DB_ENGINE', default='django.db.backends.sqlite3'),
-        'NAME': config('DB_NAME', default=BASE_DIR / 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': config('POSTGRES_DB', 'your_db_name'),
+        'USER': config('POSTGRES_USER', 'your_db_user'),
+        'PASSWORD': config('POSTGRES_PASSWORD', 'your_db_password'),
+        'HOST': config('POSTGRES_HOST', 'localhost'),
+        'PORT': config('POSTGRES_PORT', '5432'),
     }
 }
+
 
 
 # Password validation
