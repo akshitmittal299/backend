@@ -42,6 +42,11 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
     'accounts',
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
 ]
 
 STATIC_URL = '/static/'
@@ -65,6 +70,9 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'allauth.account.middleware.AccountMiddleware',
+    'django.contrib.sites.middleware.CurrentSiteMiddleware',
+    
 ]
 
 ROOT_URLCONF = 'ecomerce.urls'
@@ -85,6 +93,7 @@ TEMPLATES = [
     },
 ]
 
+AUTH_USER_MODEL = 'accounts.User'
 WSGI_APPLICATION = 'ecomerce.wsgi.application'
 
 
@@ -145,3 +154,35 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+FRONTEND_URL = os.getenv("FRONTEND_URL")
+#sendgrid credentials
+SENDGRID_API_KEY = os.getenv("SENDGRID_API_KEY")
+FORGOT_TEMPLATE_ID =os.getenv("FORGOT_TEMPLATE_ID")
+
+
+SITE_ID = 1
+
+ACCOUNT_USER_MODEL_USERNAME_FIELD = None 
+# ACCOUNT_USERNAME_REQUIRED = False
+# ACCOUNT_EMAIL_REQUIRED = True
+# ACCOUNT_AUTHENTICATION_METHOD = 'email'
+
+ACCOUNT_LOGIN_METHODS = {'email'}
+ACCOUNT_SIGNUP_FIELDS = ['email*', 'password1*', 'password2*']
+
+ACCOUNT_EMAIL_VERIFICATION = "mandatory"
+
+
+SOCIALACCOUNT_ADAPTER  = "accounts.adapter.CustomSocialAccountAdapter"
+
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'SCOPE': ['profile', 'email'],
+        'AUTH_PARAMS': {
+            'access_type': 'online',
+        },
+        'OAUTH_PKCE_ENABLED': True,
+    },
+}
